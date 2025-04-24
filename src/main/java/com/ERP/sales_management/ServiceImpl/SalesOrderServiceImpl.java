@@ -4,101 +4,78 @@ import com.ERP.sales_management.DTO.*;
 import com.ERP.sales_management.Enum.OrderStatus;
 import com.ERP.sales_management.Model.*;
 import com.ERP.sales_management.Repository.*;
+import com.ERP.sales_management.Response.SuccessResponse;
 import com.ERP.sales_management.Service.SalesOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class SalesOrderServiceImpl implements SalesOrderService {
 
     @Autowired
-    private SalesOrderRepository salesOrderRepo;
+    private SalesOrderRepository salesOrderRepository;
     @Autowired
-    private SalesOrderItemRepository itemRepo;
+    private SalesOrderItemRepository salesOrderItemRepository;
     @Autowired
-    private CustomerRepository customerRepo;
+    private CustomerRepository customerRepository;
     @Autowired
     private UserRepository userRepo;
     @Autowired
-    private ProductRepository productRepo;
+    private ProductRepository productRepository;
+    @Autowired
+    private  UserServiceClientImpl userServiceClient;
 
     @Override
-    public SalesOrderDTO createOrder(CreateSalesOrderRequest request, int userId) {
-        Customer customer = customerRepo.findById(request.getCustomerId())
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+    public SuccessResponse<?> createSalesOrder(CreateSalesOrderRequest request, String token) {
+        // Verify user from user_management
+        UserResponseDto user = userServiceClient.getUserById(request.getCustomerId(), token);
 
-        User user = userRepo.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        // Validate customer
+        Optional<Customer> optionalCustomer = customerRepository.findById(request.getCustomerId());
+        if (optionalCustomer.isEmpty()) {
+            throw new RuntimeException("Customer not found");
+        }
 
-        SalesOrder order = new SalesOrder();
-        order.setOrderNumber(UUID.randomUUID().toString());
-        order.setOrderDate(LocalDate.now());
-        order.setStatus(OrderStatus.PENDING);
-        order.setCustomer(customer);
-        order.setCreatedBy(user);
-        order.setTotalAmount(0.0);
+        Customer customer = optionalCustomer.get();
 
-        order = salesOrderRepo.save(order);
+        // Create sales order
+        SalesOrder salesOrder = new SalesOrder();
+        salesOrder.setCustomer(customer);
+        salesOrder.setId(user.getId());
+        salesOrder.setOrderDate(LocalDate.from(LocalDateTime.now()));
+        salesOrder.setStatus(OrderStatus.PLACED);
 
-        double total = 0.0;
+        salesOrder = salesOrderRepository.save(salesOrder);
+
+        List<SalesOrderItem> orderItems = new ArrayList<>();
+
         for (SalesOrderItemRequest itemReq : request.getItems()) {
-            Product product = productRepo.findById(itemReq.getProductId())
+            Product product = productRepository.findById(itemReq.getProductId())
                     .orElseThrow(() -> new RuntimeException("Product not found"));
 
-            SalesOrderItem item = new SalesOrderItem();
-            item.setSalesOrder(order);
-            item.setProduct(product);
-            item.setQuantity(itemReq.getQuantity());
-            item.setPrice(itemReq.getPrice());
-
-            itemRepo.save(item);
-            total += itemReq.getQuantity() * itemReq.getPrice();
+            SalesOrderItem orderItem = new SalesOrderItem();
+            orderItem.setSalesOrder(salesOrder);
+            orderItem.setProduct(product);
+            orderItem.setQuantity(itemReq.getQuantity());
+            orderItem.setPrice(itemReq.getPrice());
+            orderItems.add(orderItem);
         }
 
-        order.setTotalAmount(total);
-        salesOrderRepo.save(order);
+        salesOrderItemRepository.saveAll(orderItems);
 
-        SalesOrderDTO dto = new SalesOrderDTO();
-        dto.setId(order.getId());
-        dto.setOrderNumber(order.getOrderNumber());
-        dto.setCustomerId(customer.getId());
-        dto.setOrderDate(order.getOrderDate());
-        dto.setStatus(order.getStatus().toString());
-        dto.setTotalAmount(total);
-        dto.setCreatedById(user.getId());
-
-        return dto;
-    }
-
-    @Override
-    public List<SalesOrderDTO> getOrdersByCustomer(int customerId) {
-        List<SalesOrder> orders = salesOrderRepo.findByCustomerId(customerId);
-        List<SalesOrderDTO> dtos = new ArrayList<>();
-
-        for (SalesOrder order : orders) {
-            SalesOrderDTO dto = new SalesOrderDTO();
-            dto.setId(order.getId());
-            dto.setOrderNumber(order.getOrderNumber());
-            dto.setCustomerId(order.getCustomer().getId());
-            dto.setOrderDate(order.getOrderDate());
-            dto.setStatus(order.getStatus().toString());
-            dto.setTotalAmount(order.getTotalAmount());
-            dto.setCreatedById(order.getCreatedBy().getId());
-
-            dtos.add(dto);
-        }
-
-        return dtos;
+        return new SuccessResponse<>(200,"Sales order created successfully", salesOrder);
     }
 
     @Override
     public SalesOrderDTO getOrderById(int id) {
-        SalesOrder order = salesOrderRepo.findById(id)
+        SalesOrder order = salesOrderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
         SalesOrderDTO dto = new SalesOrderDTO();

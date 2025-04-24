@@ -2,59 +2,32 @@ package com.ERP.sales_management.config;
 
 
 import com.ERP.sales_management.Security.JwtAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtFilter;
-    private final UserDetailsService userDetailsService;
-
-
-    public SecurityConfig(JwtAuthenticationFilter jwtFilter, UserDetailsService userDetailsService) {
-        this.jwtFilter = jwtFilter;
-        this.userDetailsService = userDetailsService;
-    }
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable())  // Disable CSRF for stateless authentication
+        return http
+                .securityMatcher("/**")
                 .authorizeHttpRequests(auth -> auth
-                        // Public endpoints (open to everyone)
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/sales-management/api/customer/**").permitAll()  // Public customer APIs (e.g., registration)
-
-                        // Secure endpoints that require authentication (JWT required)
-                        .anyRequest().authenticated()
+                        .requestMatchers("/user_management/api/auth/**").permitAll()  // Authentication-related endpoints are publicly accessible
+                        .requestMatchers("inventory_management/api/product/**").permitAll()
+                        .requestMatchers("inventory_management/api/category/**").permitAll()
+                        .requestMatchers("/sales_management/api/customer/**").permitAll()
+                        .anyRequest().authenticated()  // All other endpoints are secured
                 )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));  // Stateless session
-
-        // Add JWT filter before UsernamePasswordAuthenticationFilter to intercept requests
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        // Uses the injected UserDetailsService to authenticate the users
-        return config.getAuthenticationManager();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();  // Encrypt passwords using BCrypt
+                .csrf(csrf -> csrf.disable())  // Disable CSRF for simplicity
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)  // Adding JWT filter
+                .build();
     }
 }

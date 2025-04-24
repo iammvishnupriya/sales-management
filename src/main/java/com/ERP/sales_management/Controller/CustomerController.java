@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/sales-management/api/customer")
+@RequestMapping("/sales_management/api/customer")
 public class CustomerController {
 
     private final CustomerService customerService;
@@ -19,7 +19,7 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CreateCustomerRequest request) {
         return ResponseEntity.ok(customerService.createCustomer(request));
     }
