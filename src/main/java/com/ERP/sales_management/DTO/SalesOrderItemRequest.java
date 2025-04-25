@@ -5,7 +5,7 @@ public class SalesOrderItemRequest {
     private int quantity;
     private double price;
 
-    public int getProductId() {
+    public long getProductId() {
         return productId;
     }
 

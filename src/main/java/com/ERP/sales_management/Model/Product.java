@@ -7,28 +7,74 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 
 
+
+import jakarta.persistence.*;
+import lombok.*;
+
 @Entity
-@Table(name = "products")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-incremented
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String name;
-    private String description;
-    private double price;
+    private String sku;
+    private Double price;
+    private Integer stockQuantity;
 
-    // Constructor, getters, setters
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    public Product() {}
+    public Long getId() {
+        return id;
+    }
 
-    public Product(int id, String name, String description, double price) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
         this.name = name;
-        this.description = description;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    // Getters and Setters for all fields
+    public Integer getStockQuantity() {
+        return stockQuantity;
+    }
+
+    public void setStockQuantity(Integer stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }

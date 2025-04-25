@@ -5,6 +5,8 @@ import com.ERP.sales_management.Enum.OrderStatus;
 import com.ERP.sales_management.Model.*;
 import com.ERP.sales_management.Repository.*;
 import com.ERP.sales_management.Response.SuccessResponse;
+import com.ERP.sales_management.Service.PaymentService;
+import com.ERP.sales_management.Service.ProductService;
 import com.ERP.sales_management.Service.SalesOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SalesOrderServiceImpl implements SalesOrderService {
@@ -28,9 +37,9 @@ public class SalesOrderServiceImpl implements SalesOrderService {
     @Autowired
     private UserRepository userRepo;
     @Autowired
-    private ProductRepository productRepository;
+    private UserServiceClientImpl userServiceClient;
     @Autowired
-    private  UserServiceClientImpl userServiceClient;
+    private ProductService productService;  // Injecting ProductClient
 
     @Override
     public SuccessResponse<?> createSalesOrder(CreateSalesOrderRequest request, String token) {
@@ -56,28 +65,44 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 
         List<SalesOrderItem> orderItems = new ArrayList<>();
 
+        // Loop over items and fetch product details from Inventory service
         for (SalesOrderItemRequest itemReq : request.getItems()) {
-            Product product = productRepository.findById(itemReq.getProductId())
-                    .orElseThrow(() -> new RuntimeException("Product not found"));
+            // Call Inventory service to get product details
+            ProductDTO productDTO = productService.getProductById(itemReq.getProductId()).block(); // Synchronous call
+            if (productDTO == null) {
+                throw new RuntimeException("Product not found from inventory service");
+            }
 
+            // Map ProductDTO to SalesOrder's Product model (you can modify this mapping logic as needed)
+            Product product = new Product();
+            product.setId(productDTO.getId());
+            product.setName(productDTO.getName());
+            product.setSku(productDTO.getSku());
+            product.setPrice(productDTO.getPrice());  // Assuming price is returned in the ProductDTO
+
+            // Create SalesOrderItem
             SalesOrderItem orderItem = new SalesOrderItem();
             orderItem.setSalesOrder(salesOrder);
-            orderItem.setProduct(product);
+            orderItem.setProduct(product);  // Set the product fetched from Inventory
             orderItem.setQuantity(itemReq.getQuantity());
-            orderItem.setPrice(itemReq.getPrice());
+            orderItem.setPrice(product.getPrice()); // Use product price from Inventory
             orderItems.add(orderItem);
         }
 
+        // Save all order items
         salesOrderItemRepository.saveAll(orderItems);
 
-        return new SuccessResponse<>(200,"Sales order created successfully", salesOrder);
+        // Return Success Response
+        return new SuccessResponse<>(200, "Sales order created successfully", salesOrder);
     }
 
     @Override
     public SalesOrderDTO getOrderById(int id) {
+        // Fetch sales order by ID
         SalesOrder order = salesOrderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
+        // Map SalesOrder to SalesOrderDTO
         SalesOrderDTO dto = new SalesOrderDTO();
         dto.setId(order.getId());
         dto.setOrderNumber(order.getOrderNumber());

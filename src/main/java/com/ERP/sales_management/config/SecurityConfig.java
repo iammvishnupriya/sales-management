@@ -24,6 +24,14 @@ public class SecurityConfig {
                         .requestMatchers("inventory_management/api/product/**").permitAll()
                         .requestMatchers("inventory_management/api/category/**").permitAll()
                         .requestMatchers("/sales_management/api/customer/**").permitAll()
+                        .requestMatchers("/sales_management/api/orders/**").permitAll()
+                        .requestMatchers("/sales_management/api/customer/**").permitAll()
+                        .requestMatchers("/sales_management/api/invoices/**").permitAll()
+                        .requestMatchers("/sales_management/api/order-items/**").permitAll()
+                        .requestMatchers("/sales_management/api/payments/**").permitAll()
+                        .requestMatchers("/sales-management/api/sales-orders/**").permitAll()
+                        .requestMatchers("/sales-management/api/**").permitAll()
+
                         .anyRequest().authenticated()  // All other endpoints are secured
                 )
                 .csrf(csrf -> csrf.disable())  // Disable CSRF for simplicity
