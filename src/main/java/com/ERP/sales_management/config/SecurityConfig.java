@@ -30,9 +30,9 @@ public class SecurityConfig {
                         .requestMatchers("/sales_management/api/order-items/**").permitAll()
                         .requestMatchers("/sales_management/api/payments/**").permitAll()
                         .requestMatchers("/sales-management/api/sales-orders/**").permitAll()
-                        .requestMatchers("/sales-management/api/**").permitAll()
-
-                        .anyRequest().authenticated()  // All other endpoints are secured
+                        .requestMatchers("/sales_management/api/sales-orders/create").permitAll()
+                        .requestMatchers("/sales_management/api/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.disable())  // Disable CSRF for simplicity
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)  // Adding JWT filter

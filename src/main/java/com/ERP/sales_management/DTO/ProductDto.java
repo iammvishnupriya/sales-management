@@ -5,17 +5,17 @@ package com.ERP.sales_management.DTO;
 import lombok.Data;
 
 @Data
-public class ProductDTO {
-    private Long id;
+public class ProductDto {
+    private Integer id;
     private String name;
     private String sku;
     private Double price;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

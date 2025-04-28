@@ -29,25 +29,25 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SuccessResponse<Order>> getOrderById(@PathVariable Long id) {
+    public ResponseEntity<SuccessResponse<Order>> getOrderById(@PathVariable Integer id) {
         Order order = orderService.getOrderById(id);
         return ResponseEntity.ok(new SuccessResponse<>(200,"Order fetched successfully", order));
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     public ResponseEntity<SuccessResponse<List<Order>>> getAllOrders() {
         List<Order> orders = orderService.getAllOrders();
         return ResponseEntity.ok(new SuccessResponse<>(200,"All orders fetched successfully", orders));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SuccessResponse<Order>> updateOrder(@PathVariable Long id, @RequestBody Order order) {
+    public ResponseEntity<SuccessResponse<Order>> updateOrder(@PathVariable Integer id, @RequestBody Order order) {
         Order updated = orderService.updateOrder(id, order);
         return ResponseEntity.ok(new SuccessResponse<>(200,"Order updated successfully", updated));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SuccessResponse<String>> deleteOrder(@PathVariable Long id) {
+    public ResponseEntity<SuccessResponse<String>> deleteOrder(@PathVariable Integer id) {
         orderService.deleteOrder(id);
         return ResponseEntity.ok(new SuccessResponse<>(200,"Order deleted successfully", "Order ID: " + id));
     }

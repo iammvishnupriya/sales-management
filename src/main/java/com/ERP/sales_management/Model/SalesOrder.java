@@ -28,7 +28,7 @@ public class SalesOrder {
     private double totalAmount;
 
     @ManyToOne
-    @JoinColumn(name = "created_by")
+    @JoinColumn(name = "created_by", nullable = true)
     private User createdBy;
 
     // Getters and Setters

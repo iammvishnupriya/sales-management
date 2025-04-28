@@ -1,31 +1,28 @@
 package com.ERP.sales_management.DTO;
 
-import lombok.*;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
-public class CreateSalesOrderRequest {
+public class SalesOrderResponse {
+    private Integer id;
+    
     @JsonProperty("customer_id")
-    @JsonAlias({"customerId"})
     private Integer customerId;
     
     @JsonProperty("order_date")
-    @JsonAlias({"orderDate"})
     private String orderDate;
     
     @JsonProperty("total_amount")
-    @JsonAlias({"totalAmount"})
     private Double totalAmount;
     
     private String status;
     
     @JsonProperty("order_items")
-    @JsonAlias({"orderItems"})
-    private List<OrderItemRequest> orderItems;
+    private List<OrderItemResponse> orderItems;
+    
+    @JsonProperty("order_status")
+    private String orderStatus;
 }

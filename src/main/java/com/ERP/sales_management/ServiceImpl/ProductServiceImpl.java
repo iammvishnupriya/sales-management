@@ -1,7 +1,8 @@
 package com.ERP.sales_management.ServiceImpl;
 
 
-import com.ERP.sales_management.DTO.ProductDTO;
+
+import com.ERP.sales_management.DTO.ProductDto;
 import com.ERP.sales_management.Service.ProductService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,10 +22,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Mono<ProductDTO> getProductById(Long productId) {
+    public Mono<ProductDto> getProductById(Integer productId) {
         return webClient.get()
                 .uri(inventoryBaseUrl + "/api/product/" + productId)
                 .retrieve()
-                .bodyToMono(ProductDTO.class);
+                .bodyToMono(ProductDto.class);
     }
 }
