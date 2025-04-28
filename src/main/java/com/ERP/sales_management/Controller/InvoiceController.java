@@ -21,6 +21,7 @@ public class InvoiceController {
         this.invoiceService = invoiceService;
     }
 
+<<<<<<< HEAD
 //    @PostMapping
 //    public ResponseEntity<SuccessResponse<Invoice>> createInvoice(@RequestBody Invoice invoice) {
 //        Invoice created = invoiceService.createInvoice(invoice);
@@ -29,12 +30,18 @@ public class InvoiceController {
     @PostMapping("/{orderId}")
     public SuccessResponse<Invoice> createInvoice(@PathVariable Integer orderId) {
         return invoiceService.createInvoiceForOrder(orderId);
+=======
+    @PostMapping
+    public ResponseEntity<SuccessResponse<Invoice>> createInvoice(@RequestBody Invoice invoice) {
+        Invoice created = invoiceService.createInvoice(invoice);
+        return ResponseEntity.ok(new SuccessResponse<>(200, "Invoice created successfully", created));
+>>>>>>> f4471c5c534a9365c894a68efbe37d49c881891c
     }
 
     @GetMapping
     public ResponseEntity<SuccessResponse<List<Invoice>>> getAllInvoices() {
         List<Invoice> invoices = invoiceService.getAllInvoices();
-        return ResponseEntity.ok(new SuccessResponse<>(200,"All invoices fetched", invoices));
+        return ResponseEntity.ok(new SuccessResponse<>(200, "All invoices fetched", invoices));
     }
 
     @GetMapping("/{id}")

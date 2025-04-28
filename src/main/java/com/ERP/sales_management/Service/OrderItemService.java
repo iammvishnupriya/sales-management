@@ -13,11 +13,11 @@ public interface OrderItemService {
 
     List<OrderItem> getAllOrderItems();
 
-    OrderItem getOrderItemById(Long id);
+    OrderItem getOrderItemById(Integer id);
 
-    List<OrderItem> getOrderItemsByOrderId(Long orderId);
+    List<OrderItem> getOrderItemsByOrderId(Integer orderId);
 
-    OrderItem updateOrderItem(Long id, OrderItem orderItem);
+    OrderItem updateOrderItem(Integer id, OrderItem orderItem);
 
-    void deleteOrderItem(Long id);
+    void deleteOrderItem(Integer id);
 }

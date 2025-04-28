@@ -5,12 +5,18 @@ import lombok.Data;
 
 @Data
 public class OrderItemResponse {
-    @JsonProperty("product_id")
-    private Integer productId;
-    
     private Integer quantity;
     
     private Double price;
     
     private Double total;
+    
+    @JsonProperty("product_id")
+    private Integer productId;
+    
+    @JsonProperty("product_name")
+    private String productName;
+    
+    @JsonProperty("product_sku")
+    private String productSku;
 }

@@ -4,6 +4,7 @@ import com.ERP.sales_management.DTO.*;
 import com.ERP.sales_management.Enum.OrderStatus;
 import com.ERP.sales_management.Model.*;
 import com.ERP.sales_management.Repository.*;
+import com.ERP.sales_management.Service.InventoryService;
 import com.ERP.sales_management.Service.SalesOrderService;
 import com.ERP.sales_management.exception.CustomerNotFoundException;
 import com.ERP.sales_management.exception.ProductException;
@@ -23,13 +24,13 @@ public class SalesOrderServiceImpl implements SalesOrderService {
     private SalesOrderRepository salesOrderRepository;
 
     @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
     private SalesOrderItemRepository salesOrderItemRepository;
     
     @Autowired
     private CustomerRepository customerRepository;
+    
+    @Autowired
+    private InventoryService inventoryService;
 
     @Override
     @Transactional
@@ -105,16 +106,22 @@ public class SalesOrderServiceImpl implements SalesOrderService {
                     throw new IllegalArgumentException("Product ID cannot be null for order item");
                 }
                 
-                System.out.println("Looking for product with ID: " + itemRequest.getProductId());
-                Product product = productRepository.findById(itemRequest.getProductId())
-                        .orElseThrow(() -> new ProductException("Product not found with ID: " + itemRequest.getProductId()));
+                System.out.println("Fetching product from inventory with ID: " + itemRequest.getProductId());
+                // Get product from inventory management system
+                ProductDto productDto = inventoryService.getProductById(itemRequest.getProductId());
                 
-                System.out.println("Found product: " + product.getName());
+                if (productDto == null) {
+                    throw new ProductException("Product not found with ID: " + itemRequest.getProductId());
+                }
+                
+                System.out.println("Found product: " + productDto.getName());
     
                 SalesOrderItem orderItem = new SalesOrderItem();
-                orderItem.setProduct(product);
+                orderItem.setProductId(productDto.getId());
+                orderItem.setProductName(productDto.getName());
+                orderItem.setProductSku(productDto.getSku());
                 orderItem.setQuantity(itemRequest.getQuantity() != null ? itemRequest.getQuantity() : 1);
-                orderItem.setPrice(product.getPrice() != null ? product.getPrice() : 0.0);
+                orderItem.setPrice(productDto.getPrice() != null ? productDto.getPrice() : 0.0);
                 orderItem.setSalesOrder(savedOrder);
     
                 System.out.println("Saving order item: " + orderItem);
@@ -151,10 +158,12 @@ public class SalesOrderServiceImpl implements SalesOrderService {
         
         for (SalesOrderItem item : orderItems) {
             OrderItemResponse itemResponse = new OrderItemResponse();
-            itemResponse.setProductId(item.getProduct().getId());
+            itemResponse.setProductId(item.getProductId());
             itemResponse.setQuantity(item.getQuantity());
             itemResponse.setPrice(item.getPrice());
             itemResponse.setTotal(item.getPrice() * item.getQuantity());
+            itemResponse.setProductName(item.getProductName());
+            itemResponse.setProductSku(item.getProductSku());
             
             orderItemResponses.add(itemResponse);
         }

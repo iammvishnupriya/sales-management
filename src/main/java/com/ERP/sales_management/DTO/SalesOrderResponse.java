@@ -9,6 +9,8 @@ import java.util.List;
 public class SalesOrderResponse {
     private Integer id;
     
+    private String status;
+    
     @JsonProperty("customer_id")
     private Integer customerId;
     
@@ -17,8 +19,6 @@ public class SalesOrderResponse {
     
     @JsonProperty("total_amount")
     private Double totalAmount;
-    
-    private String status;
     
     @JsonProperty("order_items")
     private List<OrderItemResponse> orderItems;

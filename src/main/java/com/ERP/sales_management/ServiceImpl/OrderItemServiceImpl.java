@@ -31,17 +31,17 @@ public class OrderItemServiceImpl implements OrderItemService {
     }
 
     @Override
-    public OrderItem getOrderItemById(Long id) {
+    public OrderItem getOrderItemById(Integer id) {
         return orderItemRepository.findById(id).orElse(null);
     }
 
     @Override
-    public List<OrderItem> getOrderItemsByOrderId(Long orderId) {
+    public List<OrderItem> getOrderItemsByOrderId(Integer orderId) {
         return orderItemRepository.findByOrderId(orderId);
     }
 
     @Override
-    public OrderItem updateOrderItem(Long id, OrderItem orderItem) {
+    public OrderItem updateOrderItem(Integer id, OrderItem orderItem) {
         Optional<OrderItem> existing = orderItemRepository.findById(id);
         if (existing.isPresent()) {
             orderItem.setId(id);
@@ -51,7 +51,7 @@ public class OrderItemServiceImpl implements OrderItemService {
     }
 
     @Override
-    public void deleteOrderItem(Long id) {
+    public void deleteOrderItem(Integer id) {
         orderItemRepository.deleteById(id);
     }
 }
