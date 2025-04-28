@@ -11,7 +11,7 @@ public class SuccessResponse<T> implements Serializable {
     private int statusCode = 200;
     private String statusMessage = "Success";
     private transient T data;
-
+    public SuccessResponse(){}
     public SuccessResponse(int statusCode, String statusMessage, T data) {
         this.statusCode = statusCode;
         this.statusMessage = statusMessage;

@@ -1,6 +1,4 @@
 package com.ERP.sales_management.Repository;
-
-
 import com.ERP.sales_management.Model.SalesOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

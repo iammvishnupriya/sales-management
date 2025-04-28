@@ -12,7 +12,7 @@ public class SalesOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private String orderNumber;
 
@@ -32,9 +32,9 @@ public class SalesOrder {
     private User createdBy;
 
     // Getters and Setters
-    public int getId() { return id; }
+    public Integer getId() { return id; }
 
-    public void setId(int id) { this.id = id; }
+    public void setId(Integer id) { this.id = id; }
 
     public String getOrderNumber() { return orderNumber; }
 

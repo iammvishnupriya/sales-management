@@ -21,10 +21,14 @@ public class InvoiceController {
         this.invoiceService = invoiceService;
     }
 
-    @PostMapping
-    public ResponseEntity<SuccessResponse<Invoice>> createInvoice(@RequestBody Invoice invoice) {
-        Invoice created = invoiceService.createInvoice(invoice);
-        return ResponseEntity.ok(new SuccessResponse<>(200,"Invoice created successfully", created));
+//    @PostMapping
+//    public ResponseEntity<SuccessResponse<Invoice>> createInvoice(@RequestBody Invoice invoice) {
+//        Invoice created = invoiceService.createInvoice(invoice);
+//        return ResponseEntity.ok(new SuccessResponse<>(200,"Invoice created successfully", created));
+//    }
+    @PostMapping("/{orderId}")
+    public SuccessResponse<Invoice> createInvoice(@PathVariable Integer orderId) {
+        return invoiceService.createInvoiceForOrder(orderId);
     }
 
     @GetMapping
@@ -34,25 +38,25 @@ public class InvoiceController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SuccessResponse<Invoice>> getInvoiceById(@PathVariable Long id) {
+    public ResponseEntity<SuccessResponse<Invoice>> getInvoiceById(@PathVariable Integer id) {
         Invoice invoice = invoiceService.getInvoiceById(id);
         return ResponseEntity.ok(new SuccessResponse<>(200,"Invoice fetched", invoice));
     }
 
     @GetMapping("/by-order/{orderId}")
-    public ResponseEntity<SuccessResponse<List<Invoice>>> getInvoicesByOrderId(@PathVariable Long orderId) {
+    public ResponseEntity<SuccessResponse<List<Invoice>>> getInvoicesByOrderId(@PathVariable Integer orderId) {
         List<Invoice> invoices = invoiceService.getInvoicesByOrderId(orderId);
         return ResponseEntity.ok(new SuccessResponse<>(200,"Invoices for order ID fetched", invoices));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SuccessResponse<Invoice>> updateInvoice(@PathVariable Long id, @RequestBody Invoice invoice) {
+    public ResponseEntity<SuccessResponse<Invoice>> updateInvoice(@PathVariable Integer id, @RequestBody Invoice invoice) {
         Invoice updated = invoiceService.updateInvoice(id, invoice);
         return ResponseEntity.ok(new SuccessResponse<>(200,"Invoice updated", updated));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SuccessResponse<String>> deleteInvoice(@PathVariable Long id) {
+    public ResponseEntity<SuccessResponse<String>> deleteInvoice(@PathVariable Integer id) {
         invoiceService.deleteInvoice(id);
         return ResponseEntity.ok(new SuccessResponse<>(200,"Invoice deleted", "Deleted ID: " + id));
     }

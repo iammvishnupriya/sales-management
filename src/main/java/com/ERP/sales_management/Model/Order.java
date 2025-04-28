@@ -26,7 +26,7 @@ public class Order {
     private String status;
 
     @Column(name = "customer_id", nullable = false)
-    private Long customerId;
+    private Integer customerId;
 
     public Integer getId() {
         return id;
@@ -60,11 +60,11 @@ public class Order {
         this.status = status;
     }
 
-    public Long getCustomerId() {
+    public Integer getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(Long customerId) {
+    public void setCustomerId(Integer customerId) {
         this.customerId = customerId;
     }
 }
