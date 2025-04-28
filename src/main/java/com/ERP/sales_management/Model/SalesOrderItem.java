@@ -2,9 +2,6 @@ package com.ERP.sales_management.Model;
 
 import jakarta.persistence.*;
 
-
-import jakarta.persistence.*;
-
 @Entity
 @Table(name = "sales_order_item")
 public class SalesOrderItem {
@@ -16,9 +13,11 @@ public class SalesOrderItem {
     @ManyToOne
     private SalesOrder salesOrder;
 
-    @ManyToOne
-    private Product product;
+    @Column(name = "product_id", nullable = false)
+    private Integer productId;
 
+    private String productName;
+    private String productSku;
     private int quantity;
     private double price;
 
@@ -38,12 +37,28 @@ public class SalesOrderItem {
         this.salesOrder = salesOrder;
     }
 
-    public Product getProduct() {
-        return product;
+    public Integer getProductId() {
+        return productId;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getProductSku() {
+        return productSku;
+    }
+
+    public void setProductSku(String productSku) {
+        this.productSku = productSku;
     }
 
     public int getQuantity() {

@@ -21,8 +21,8 @@ public class SecurityConfig {
                 .securityMatcher("/**")
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user_management/api/auth/**").permitAll()  // Authentication-related endpoints are publicly accessible
-                        .requestMatchers("inventory_management/api/product/**").permitAll()
-                        .requestMatchers("inventory_management/api/category/**").permitAll()
+                        .requestMatchers("/inventory_management/api/product/**").permitAll()
+                        .requestMatchers("/inventory_management/api/category/**").permitAll()
                         .requestMatchers("/sales_management/api/customer/**").permitAll()
                         .requestMatchers("/sales_management/api/orders/**").permitAll()
                         .requestMatchers("/sales_management/api/customer/**").permitAll()

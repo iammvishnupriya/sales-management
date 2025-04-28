@@ -24,36 +24,36 @@ public class OrderItemController {
     @PostMapping
     public ResponseEntity<SuccessResponse<OrderItem>> createOrderItem(@RequestBody OrderItem orderItem) {
         OrderItem created = orderItemService.createOrderItem(orderItem);
-        return ResponseEntity.ok(new SuccessResponse<>(200,"Order item created successfully", created));
+        return ResponseEntity.ok(new SuccessResponse<>(200, "Order item created successfully", created));
     }
 
     @GetMapping
     public ResponseEntity<SuccessResponse<List<OrderItem>>> getAllOrderItems() {
         List<OrderItem> items = orderItemService.getAllOrderItems();
-        return ResponseEntity.ok(new SuccessResponse<>(200,"All order items fetched", items));
+        return ResponseEntity.ok(new SuccessResponse<>(200, "All order items fetched", items));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SuccessResponse<OrderItem>> getOrderItemById(@PathVariable Long id) {
+    public ResponseEntity<SuccessResponse<OrderItem>> getOrderItemById(@PathVariable Integer id) {
         OrderItem item = orderItemService.getOrderItemById(id);
-        return ResponseEntity.ok(new SuccessResponse<>(200,"Order item fetched", item));
+        return ResponseEntity.ok(new SuccessResponse<>(200, "Order item fetched", item));
     }
 
     @GetMapping("/by-order/{orderId}")
-    public ResponseEntity<SuccessResponse<List<OrderItem>>> getOrderItemsByOrderId(@PathVariable Long orderId) {
+    public ResponseEntity<SuccessResponse<List<OrderItem>>> getOrderItemsByOrderId(@PathVariable Integer orderId) {
         List<OrderItem> items = orderItemService.getOrderItemsByOrderId(orderId);
-        return ResponseEntity.ok(new SuccessResponse<>(200,"Order items for order ID fetched", items));
+        return ResponseEntity.ok(new SuccessResponse<>(200, "Order items for order ID fetched", items));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SuccessResponse<OrderItem>> updateOrderItem(@PathVariable Long id, @RequestBody OrderItem orderItem) {
+    public ResponseEntity<SuccessResponse<OrderItem>> updateOrderItem(@PathVariable Integer id, @RequestBody OrderItem orderItem) {
         OrderItem updated = orderItemService.updateOrderItem(id, orderItem);
-        return ResponseEntity.ok(new SuccessResponse<>(200,"Order item updated", updated));
+        return ResponseEntity.ok(new SuccessResponse<>(200, "Order item updated", updated));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SuccessResponse<String>> deleteOrderItem(@PathVariable Long id) {
+    public ResponseEntity<SuccessResponse<String>> deleteOrderItem(@PathVariable Integer id) {
         orderItemService.deleteOrderItem(id);
-        return ResponseEntity.ok(new SuccessResponse<>(200,"Order item deleted", "Deleted ID: " + id));
+        return ResponseEntity.ok(new SuccessResponse<>(200, "Order item deleted", "Deleted ID: " + id));
     }
 }

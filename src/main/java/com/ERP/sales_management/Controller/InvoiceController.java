@@ -24,13 +24,13 @@ public class InvoiceController {
     @PostMapping
     public ResponseEntity<SuccessResponse<Invoice>> createInvoice(@RequestBody Invoice invoice) {
         Invoice created = invoiceService.createInvoice(invoice);
-        return ResponseEntity.ok(new SuccessResponse<>(200,"Invoice created successfully", created));
+        return ResponseEntity.ok(new SuccessResponse<>(200, "Invoice created successfully", created));
     }
 
     @GetMapping
     public ResponseEntity<SuccessResponse<List<Invoice>>> getAllInvoices() {
         List<Invoice> invoices = invoiceService.getAllInvoices();
-        return ResponseEntity.ok(new SuccessResponse<>(200,"All invoices fetched", invoices));
+        return ResponseEntity.ok(new SuccessResponse<>(200, "All invoices fetched", invoices));
     }
 
     @GetMapping("/{id}")
