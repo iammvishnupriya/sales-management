@@ -1,6 +1,7 @@
 package com.ERP.sales_management.Controller;
 
 
+import com.ERP.sales_management.DTO.InvoiceResponseDTO;
 import com.ERP.sales_management.Model.Invoice;
 import com.ERP.sales_management.Response.SuccessResponse;
 import com.ERP.sales_management.Service.InvoiceService;
@@ -26,10 +27,10 @@ public class InvoiceController {
 //        Invoice created = invoiceService.createInvoice(invoice);
 //        return ResponseEntity.ok(new SuccessResponse<>(200,"Invoice created successfully", created));
 //    }
-    @PostMapping("/{orderId}")
-    public SuccessResponse<Invoice> createInvoice(@PathVariable Integer orderId) {
-        return invoiceService.createInvoiceForOrder(orderId);
-    }
+@PostMapping("/{orderId}")
+public SuccessResponse<InvoiceResponseDTO> createInvoice(@PathVariable Integer orderId) {
+    return invoiceService.createInvoiceForOrder(orderId);
+}
     // @PostMapping
     // public ResponseEntity<SuccessResponse<Invoice>> createInvoice(@RequestBody Invoice invoice) {
     //     Invoice created = invoiceService.createInvoiceForOrder(invoice);
