@@ -8,20 +8,12 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class SuccessResponse<T> implements Serializable {
-<<<<<<< HEAD
-
-    private int statusCode = 200;
-    private String statusMessage = "Success";
-    private transient T data;
-    public SuccessResponse(){}
-=======
     private int statusCode;
     private String statusMessage;
     private T data;
     
     public SuccessResponse() {}
     
->>>>>>> f4471c5c534a9365c894a68efbe37d49c881891c
     public SuccessResponse(int statusCode, String statusMessage, T data) {
         this.statusCode = statusCode;
         this.statusMessage = statusMessage;
