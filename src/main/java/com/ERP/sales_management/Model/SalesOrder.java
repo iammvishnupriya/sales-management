@@ -45,14 +45,21 @@ public class SalesOrder {
     @JoinColumn(name = "created_by", nullable = true)
     private User createdBy;
 
-    // Getters and Setters
-    public Integer getId() { return id; }
+    public Integer getId() {
+        return id;
+    }
 
-    public void setId(Integer id) { this.id = id; }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-    public String getOrderNumber() { return orderNumber; }
+    public String getOrderNumber() {
+        return orderNumber;
+    }
 
-    public void setOrderNumber(String orderNumber) { this.orderNumber = orderNumber; }
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
+    }
 
     public String getCustomer() {
         return customer;
@@ -62,19 +69,35 @@ public class SalesOrder {
         this.customer = customer;
     }
 
-    public LocalDate getOrderDate() { return orderDate; }
+    public LocalDate getOrderDate() {
+        return orderDate;
+    }
 
-    public void setOrderDate(LocalDate orderDate) { this.orderDate = orderDate; }
+    public void setOrderDate(LocalDate orderDate) {
+        this.orderDate = orderDate;
+    }
 
-    public OrderStatus getStatus() { return status; }
+    public OrderStatus getStatus() {
+        return status;
+    }
 
-    public void setStatus(OrderStatus status) { this.status = status; }
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
 
-    public double getTotalAmount() { return totalAmount; }
+    public double getTotalAmount() {
+        return totalAmount;
+    }
 
-    public void setTotalAmount(double totalAmount) { this.totalAmount = totalAmount; }
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
 
-    public User getCreatedBy() { return createdBy; }
+    public User getCreatedBy() {
+        return createdBy;
+    }
 
-    public void setCreatedBy(User createdBy) { this.createdBy = createdBy; }
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
 }

@@ -3,6 +3,8 @@ package com.ERP.sales_management.DTO;
 
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
 public class ProductDto {
@@ -10,6 +12,7 @@ public class ProductDto {
     private String name;
     private String sku;
     private Double price;
+    private Integer stockQuantity;
 
     public Integer getId() {
         return id;
@@ -41,5 +44,13 @@ public class ProductDto {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Integer getStockQuantity() {
+        return stockQuantity;
+    }
+
+    public void setStockQuantity(Integer stockQuantity) {
+        this.stockQuantity = stockQuantity;
     }
 }

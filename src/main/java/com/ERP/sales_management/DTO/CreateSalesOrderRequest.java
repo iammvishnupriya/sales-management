@@ -3,6 +3,8 @@ package com.ERP.sales_management.DTO;
 import lombok.*;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CreateSalesOrderRequest {
 
     private String customer;

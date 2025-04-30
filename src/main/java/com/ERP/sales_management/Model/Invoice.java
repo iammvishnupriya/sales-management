@@ -10,8 +10,6 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "invoices")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class Invoice {
 
@@ -37,6 +35,17 @@ public class Invoice {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    public Invoice(){}
+    public Invoice(Integer id, Integer orderId, String invoiceNo, Double totalAmount, String status, LocalDateTime issuedDate, Customer customer) {
+        this.id = id;
+        this.orderId = orderId;
+        this.invoiceNo = invoiceNo;
+        this.totalAmount = totalAmount;
+        this.status = status;
+        this.issuedDate = issuedDate;
+        this.customer = customer;
+    }
 
     public Integer getId() {
         return id;

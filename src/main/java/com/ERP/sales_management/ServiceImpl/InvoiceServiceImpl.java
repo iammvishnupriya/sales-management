@@ -1,5 +1,8 @@
 package com.ERP.sales_management.ServiceImpl;
 
+import com.ERP.sales_management.DTO.InvoiceResponseDTO;
+import com.ERP.sales_management.DTO.OrderItemResponse;
+import com.ERP.sales_management.DTO.ProductDto;
 import com.ERP.sales_management.Model.Customer;
 import com.ERP.sales_management.Model.Invoice;
 import com.ERP.sales_management.Model.SalesOrder;
@@ -34,7 +37,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public SuccessResponse<Invoice> createInvoiceForOrder(Integer orderId) {
+    public SuccessResponse<InvoiceResponseDTO> createInvoiceForOrder(Integer orderId) {
         try {
             if (orderId == null) {
                 throw new IllegalArgumentException("Order ID cannot be null.");
@@ -67,7 +70,28 @@ public class InvoiceServiceImpl implements InvoiceService {
 
             Invoice savedInvoice = invoiceRepository.save(invoice);
 
-            return new SuccessResponse<>(200, "Invoice generated successfully.", savedInvoice);
+            // Prepare ProductDto instead of OrderItemResponse
+            List<ProductDto> productDtos = orderItems.stream().map(item -> {
+                ProductDto productDto = new ProductDto();
+                productDto.setId(item.getProductId()); // assuming you have productId in SalesOrderItem
+                productDto.setName(item.getProductName());
+                productDto.setSku(item.getProductSku());
+                productDto.setPrice(item.getPrice());
+                productDto.setStockQuantity(item.getQuantity()); // this may vary depending on your actual logic
+                return productDto;
+            }).toList();
+
+            InvoiceResponseDTO invoiceResponse = new InvoiceResponseDTO();
+            invoiceResponse.setId(savedInvoice.getId());
+            invoiceResponse.setOrderId(savedInvoice.getOrderId());
+            invoiceResponse.setInvoiceNo(savedInvoice.getInvoiceNo());
+            invoiceResponse.setTotalAmount(savedInvoice.getTotalAmount());
+            invoiceResponse.setStatus(savedInvoice.getStatus());
+            invoiceResponse.setIssuedDate(savedInvoice.getIssuedDate());
+            invoiceResponse.setCustomer(savedInvoice.getCustomer());
+            invoiceResponse.setItems(productDtos); // Set the list of products
+
+            return new SuccessResponse<>(200, "Invoice generated successfully.", invoiceResponse);
 
         } catch (Exception e) {
             throw new RuntimeException("Failed to generate invoice: " + e.getMessage());
