@@ -22,20 +22,13 @@ public class InvoiceController {
         this.invoiceService = invoiceService;
     }
 
-//    @PostMapping
-//    public ResponseEntity<SuccessResponse<Invoice>> createInvoice(@RequestBody Invoice invoice) {
-//        Invoice created = invoiceService.createInvoice(invoice);
-//        return ResponseEntity.ok(new SuccessResponse<>(200,"Invoice created successfully", created));
-//    }
-@PostMapping("/{orderId}")
-public SuccessResponse<InvoiceResponseDTO> createInvoice(@PathVariable Integer orderId) {
-    return invoiceService.createInvoiceForOrder(orderId);
-}
-    // @PostMapping
-    // public ResponseEntity<SuccessResponse<Invoice>> createInvoice(@RequestBody Invoice invoice) {
-    //     Invoice created = invoiceService.createInvoiceForOrder(invoice);
-    //     return ResponseEntity.ok(new SuccessResponse<>(200, "Invoice created successfully", created));
-    // }
+
+    @PostMapping("/add")
+    public ResponseEntity<SuccessResponse<InvoiceResponseDTO>> createInvoice(@RequestParam String orderId) {
+        System.out.println("Entering the controller");
+        return ResponseEntity.ok(invoiceService.createInvoiceForOrder(orderId));
+    }
+
 
     @GetMapping
     public ResponseEntity<SuccessResponse<List<Invoice>>> getAllInvoices() {
@@ -50,7 +43,7 @@ public SuccessResponse<InvoiceResponseDTO> createInvoice(@PathVariable Integer o
     }
 
     @GetMapping("/by-order/{orderId}")
-    public ResponseEntity<SuccessResponse<List<Invoice>>> getInvoicesByOrderId(@PathVariable Integer orderId) {
+    public ResponseEntity<SuccessResponse<List<Invoice>>> getInvoicesByOrderId(@PathVariable String orderId) {
         List<Invoice> invoices = invoiceService.getInvoicesByOrderId(orderId);
         return ResponseEntity.ok(new SuccessResponse<>(200,"Invoices for order ID fetched", invoices));
     }

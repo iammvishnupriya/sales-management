@@ -18,7 +18,9 @@ public class Invoice {
     private Integer id;
 
     @Column(name = "order_id", nullable = false)
-    private Integer orderId;
+    private String orderId;
+
+
 
     @Column(name = "invoice_no", nullable = false, unique = true)
     private String invoiceNo;
@@ -26,8 +28,7 @@ public class Invoice {
     @Column(nullable = false)
     private Double totalAmount;
 
-    @Column(nullable = false)
-    private String status;
+
 
     @Column(name = "issued_date", nullable = false)
     private LocalDateTime issuedDate;
@@ -37,12 +38,11 @@ public class Invoice {
     private Customer customer;
 
     public Invoice(){}
-    public Invoice(Integer id, Integer orderId, String invoiceNo, Double totalAmount, String status, LocalDateTime issuedDate, Customer customer) {
+    public Invoice(Integer id, String orderId, String invoiceNo, Double totalAmount,LocalDateTime issuedDate, Customer customer) {
         this.id = id;
         this.orderId = orderId;
         this.invoiceNo = invoiceNo;
         this.totalAmount = totalAmount;
-        this.status = status;
         this.issuedDate = issuedDate;
         this.customer = customer;
     }
@@ -55,11 +55,11 @@ public class Invoice {
         this.id = id;
     }
 
-    public Integer getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(Integer orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 
@@ -79,13 +79,7 @@ public class Invoice {
         this.totalAmount = totalAmount;
     }
 
-    public String getStatus() {
-        return status;
-    }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public LocalDateTime getIssuedDate() {
         return issuedDate;

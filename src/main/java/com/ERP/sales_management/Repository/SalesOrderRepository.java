@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface SalesOrderRepository extends JpaRepository<SalesOrder, Integer> {
     List<SalesOrder> findByCustomerId(int customerId);
+    java.util.Optional<SalesOrder> findByOrderNumber(String orderNumber);
 }

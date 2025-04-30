@@ -10,5 +10,7 @@ import java.util.List;
 @Repository
 public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
 
-    List<Invoice> findByOrderId(Integer orderId);
+    List<Invoice> findByOrderId(String orderId);
+    boolean existsByInvoiceNo(String invoiceNo);
+
 }
