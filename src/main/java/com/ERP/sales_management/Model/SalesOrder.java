@@ -3,11 +3,18 @@ package com.ERP.sales_management.Model;
 import com.ERP.sales_management.Enum.OrderStatus;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
 
 @Entity
 @Table(name = "sales_order")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class SalesOrder {
 
     @Id
@@ -16,14 +23,21 @@ public class SalesOrder {
 
     private String orderNumber;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    // @ManyToOne
+    // @JoinColumn(name = "customer_id")
+    // private Customer customer;
+    private String customer;
 
     private LocalDate orderDate;
 
+    private Integer categoryId;
+
+    private String productName;
+
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
+    private Integer quantity;
 
     private double totalAmount;
 
@@ -40,9 +54,13 @@ public class SalesOrder {
 
     public void setOrderNumber(String orderNumber) { this.orderNumber = orderNumber; }
 
-    public Customer getCustomer() { return customer; }
+    public String getCustomer() {
+        return customer;
+    }
 
-    public void setCustomer(Customer customer) { this.customer = customer; }
+    public void setCustomer(String customer) {
+        this.customer = customer;
+    }
 
     public LocalDate getOrderDate() { return orderDate; }
 

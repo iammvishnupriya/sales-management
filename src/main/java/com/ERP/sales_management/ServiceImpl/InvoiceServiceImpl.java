@@ -43,10 +43,10 @@ public class InvoiceServiceImpl implements InvoiceService {
             SalesOrder order = salesOrderRepository.findById(orderId)
                     .orElseThrow(() -> new RuntimeException("Sales order not found for ID: " + orderId));
 
-            Customer customer = order.getCustomer();
-            if (customer == null) {
-                throw new RuntimeException("Customer not associated with this order.");
-            }
+            // Customer customer = order.getCustomer();
+            // if (customer == null) {
+            //     throw new RuntimeException("Customer not associated with this order.");
+            // }
 
             List<SalesOrderItem> orderItems = salesOrderItemRepository.findBySalesOrderId(orderId);
             if (orderItems == null || orderItems.isEmpty()) {
@@ -57,14 +57,13 @@ public class InvoiceServiceImpl implements InvoiceService {
                     .mapToDouble(item -> item.getPrice() * item.getQuantity())
                     .sum();
 
-            Invoice invoice = Invoice.builder()
-                    .orderId(order.getId())
-                    .invoiceNo("INV-" + order.getId())
-                    .customer(customer)
-                    .totalAmount(totalAmount)
-                    .status("Completed")
-                    .issuedDate(LocalDateTime.now())
-                    .build();
+            Invoice invoice = new Invoice();
+            invoice.setOrderId(order.getId());
+            invoice.setInvoiceNo("INVNO-" + order.getId());
+            // invoice.setCustomer(customer);
+            invoice.setTotalAmount(totalAmount);
+            invoice.setStatus("Completed");
+            invoice.setIssuedDate(LocalDateTime.now());
 
             Invoice savedInvoice = invoiceRepository.save(invoice);
 
