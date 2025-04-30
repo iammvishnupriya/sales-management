@@ -41,6 +41,64 @@ public class InvoiceServiceImpl implements InvoiceService {
     public SuccessResponse<InvoiceResponseDTO> createInvoiceForOrder(String inputOrderId) {
         if (inputOrderId == null) {
             throw new IllegalArgumentException("Order ID cannot be null.");
+    public SuccessResponse<InvoiceResponseDTO> createInvoiceForOrder(Integer orderId) {
+        try {
+            if (orderId == null) {
+                throw new IllegalArgumentException("Order ID cannot be null.");
+            }
+
+            SalesOrder order = salesOrderRepository.findById(orderId)
+                    .orElseThrow(() -> new RuntimeException("Sales order not found for ID: " + orderId));
+
+            // Customer customer = order.getCustomer();
+            // if (customer == null) {
+            //     throw new RuntimeException("Customer not associated with this order.");
+            // }
+
+            List<SalesOrderItem> orderItems = salesOrderItemRepository.findBySalesOrderId(orderId);
+            if (orderItems == null || orderItems.isEmpty()) {
+                throw new RuntimeException("No items found for this sales order.");
+            }
+
+            double totalAmount = orderItems.stream()
+                    .mapToDouble(item -> item.getPrice() * item.getQuantity())
+                    .sum();
+
+            Invoice invoice = new Invoice();
+            invoice.setOrderId(order.getId());
+            invoice.setInvoiceNo("INVNO-" + order.getId());
+            // invoice.setCustomer(customer);
+            invoice.setTotalAmount(totalAmount);
+            invoice.setStatus("Completed");
+            invoice.setIssuedDate(LocalDateTime.now());
+
+            Invoice savedInvoice = invoiceRepository.save(invoice);
+
+            // Prepare ProductDto instead of OrderItemResponse
+            List<ProductDto> productDtos = orderItems.stream().map(item -> {
+                ProductDto productDto = new ProductDto();
+                productDto.setId(item.getProductId()); // assuming you have productId in SalesOrderItem
+                productDto.setName(item.getProductName());
+                productDto.setSku(item.getProductSku());
+                productDto.setPrice(item.getPrice());
+                productDto.setStockQuantity(item.getQuantity()); // this may vary depending on your actual logic
+                return productDto;
+            }).toList();
+
+            InvoiceResponseDTO invoiceResponse = new InvoiceResponseDTO();
+            invoiceResponse.setId(savedInvoice.getId());
+            invoiceResponse.setOrderId(savedInvoice.getOrderId());
+            invoiceResponse.setInvoiceNo(savedInvoice.getInvoiceNo());
+            invoiceResponse.setTotalAmount(savedInvoice.getTotalAmount());
+            invoiceResponse.setStatus(savedInvoice.getStatus());
+            invoiceResponse.setIssuedDate(savedInvoice.getIssuedDate());
+            invoiceResponse.setCustomer(savedInvoice.getCustomer());
+            invoiceResponse.setItems(productDtos); // Set the list of products
+
+            return new SuccessResponse<>(200, "Invoice generated successfully.", invoiceResponse);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to generate invoice: " + e.getMessage());
         }
 
         SalesOrder order = salesOrderRepository.findByOrderNumber(inputOrderId)

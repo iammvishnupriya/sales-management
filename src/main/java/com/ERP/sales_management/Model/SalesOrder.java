@@ -4,9 +4,8 @@ import com.ERP.sales_management.Enum.OrderStatus;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDate;
 
@@ -15,6 +14,7 @@ import java.time.LocalDate;
 @Table(name = "sales_order")
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class SalesOrder {
 
     @Id
@@ -23,14 +23,21 @@ public class SalesOrder {
 
     private String orderNumber;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    // @ManyToOne
+    // @JoinColumn(name = "customer_id")
+    // private Customer customer;
+    private String customer;
 
     private LocalDate orderDate;
 
+    private Integer categoryId;
+
+    private String productName;
+
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
+    private Integer quantity;
 
     private double totalAmount;
 
@@ -54,11 +61,11 @@ public class SalesOrder {
         this.orderNumber = orderNumber;
     }
 
-    public Customer getCustomer() {
+    public String getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setCustomer(String customer) {
         this.customer = customer;
     }
 

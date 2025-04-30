@@ -3,16 +3,13 @@ package com.ERP.sales_management.DTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 public class SalesOrderResponse {
     private Integer id;
     
     private String status;
     
-    @JsonProperty("customer_id")
-    private Integer customerId;
+    private String customer;
     
     @JsonProperty("order_date")
     private String orderDate;
@@ -20,8 +17,8 @@ public class SalesOrderResponse {
     @JsonProperty("total_amount")
     private Double totalAmount;
     
-    @JsonProperty("order_items")
-    private List<OrderItemResponse> orderItems;
+    // @JsonProperty("order_items")
+    // private List<OrderItemResponse> orderItems;
     
     @JsonProperty("order_status")
     private String orderStatus;
@@ -42,12 +39,12 @@ public class SalesOrderResponse {
         this.status = status;
     }
 
-    public Integer getCustomerId() {
-        return customerId;
+    public String getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
+    public void setCustomerId(String customer) {
+        this.customer = customer;
     }
 
     public String getOrderDate() {
@@ -66,13 +63,13 @@ public class SalesOrderResponse {
         this.totalAmount = totalAmount;
     }
 
-    public List<OrderItemResponse> getOrderItems() {
-        return orderItems;
-    }
+    // public List<OrderItemResponse> getOrderItems() {
+    //     return orderItems;
+    // }
 
-    public void setOrderItems(List<OrderItemResponse> orderItems) {
-        this.orderItems = orderItems;
-    }
+    // public void setOrderItems(List<OrderItemResponse> orderItems) {
+    //     this.orderItems = orderItems;
+    // }
 
     public String getOrderStatus() {
         return orderStatus;
