@@ -1,4 +1,5 @@
 package com.ERP.sales_management.DTO;
+import com.ERP.sales_management.Enum.OrderStatus;
 import com.ERP.sales_management.Model.Customer;
 import lombok.Data;
 
@@ -9,7 +10,8 @@ import java.util.List;
     @Data
     public class InvoiceResponseDTO {
         private Integer id;
-        private Integer orderId;
+        private String orderId;
+        private OrderStatus orderStatus;
         private String invoiceNo;
         private Double totalAmount;
         private String status;
@@ -25,11 +27,11 @@ import java.util.List;
             this.id = id;
         }
 
-        public Integer getOrderId() {
+        public String getOrderId() {
             return orderId;
         }
 
-        public void setOrderId(Integer orderId) {
+        public void setOrderId(String orderId) {
             this.orderId = orderId;
         }
 
@@ -79,6 +81,14 @@ import java.util.List;
 
         public void setItems(List<ProductDto> items) {
             this.items = items;
+        }
+
+        public OrderStatus getOrderStatus() {
+            return orderStatus;
+        }
+
+        public void setOrderStatus(OrderStatus orderStatus) {
+            this.orderStatus = orderStatus;
         }
     }
 

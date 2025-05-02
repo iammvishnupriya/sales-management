@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
@@ -37,6 +38,9 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
+    public SuccessResponse<InvoiceResponseDTO> createInvoiceForOrder(String inputOrderId) {
+        if (inputOrderId == null) {
+            throw new IllegalArgumentException("Order ID cannot be null.");
     public SuccessResponse<InvoiceResponseDTO> createInvoiceForOrder(Integer orderId) {
         try {
             if (orderId == null) {
@@ -96,7 +100,75 @@ public class InvoiceServiceImpl implements InvoiceService {
         } catch (Exception e) {
             throw new RuntimeException("Failed to generate invoice: " + e.getMessage());
         }
+
+        SalesOrder order = salesOrderRepository.findByOrderNumber(inputOrderId)
+                .orElseThrow(() -> new RuntimeException("Sales order not found with ID: " + inputOrderId));
+
+        Customer customer = order.getCustomer();
+        if (customer == null) {
+            throw new RuntimeException("Customer not associated with this order.");
+        }
+
+        List<SalesOrderItem> orderItems = salesOrderItemRepository.findBySalesOrderOrderNumber(inputOrderId);
+        if (orderItems.isEmpty()) {
+            throw new RuntimeException("No items found for this sales order.");
+        }
+
+        double totalAmount = orderItems.stream()
+                .mapToDouble(item -> item.getPrice() * item.getQuantity())
+                .sum();
+
+        // Generate new IDs
+        String invoiceNo = generateRandomInvoiceNo();
+        String orderId = generateRandomOrderId();
+
+        // Optional: Check for duplicate invoiceNo or orderId
+        if (invoiceRepository.existsByInvoiceNo(invoiceNo)) {
+            throw new RuntimeException("Invoice number already exists: " + invoiceNo);
+        }
+
+        Invoice invoice = new Invoice();
+        invoice.setOrderId(orderId);
+        invoice.setInvoiceNo(invoiceNo);
+        invoice.setCustomer(customer);
+        invoice.setTotalAmount(totalAmount);
+        invoice.setIssuedDate(LocalDateTime.now());
+
+        Invoice savedInvoice = invoiceRepository.save(invoice);
+
+        List<ProductDto> productDtos = orderItems.stream().map(item -> {
+            ProductDto dto = new ProductDto();
+            dto.setId(item.getProductId());
+            dto.setName(item.getProductName());
+            dto.setSku(item.getProductSku());
+            dto.setPrice(item.getPrice());
+            dto.setStockQuantity(item.getQuantity());
+            return dto;
+        }).toList();
+
+        InvoiceResponseDTO responseDTO = new InvoiceResponseDTO();
+        responseDTO.setId(savedInvoice.getId());
+        responseDTO.setOrderId(savedInvoice.getOrderId());
+        responseDTO.setOrderStatus(order.getStatus());
+        responseDTO.setInvoiceNo(savedInvoice.getInvoiceNo());
+        responseDTO.setTotalAmount(savedInvoice.getTotalAmount());
+        responseDTO.setIssuedDate(savedInvoice.getIssuedDate());
+        responseDTO.setCustomer(savedInvoice.getCustomer());
+        responseDTO.setItems(productDtos);
+
+        return new SuccessResponse<>(200, "Invoice generated successfully.", responseDTO);
     }
+    private String generateRandomOrderId() {
+        int randomNum = new Random().nextInt(9000) + 1000; // 100–999
+        return "ORD-" + randomNum;
+    }
+
+    private String generateRandomInvoiceNo() {
+        int randomNum = new Random().nextInt(9000) + 1000; // 100–999
+        return "INV-" + randomNum;
+    }
+
+
 
     @Override
     public List<Invoice> getAllInvoices() {
@@ -109,7 +181,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<Invoice> getInvoicesByOrderId(Integer orderId) {
+    public List<Invoice> getInvoicesByOrderId(String orderId) {
         return invoiceRepository.findByOrderId(orderId);
     }
 
