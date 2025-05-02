@@ -49,13 +49,13 @@ public class SalesOrderServiceImpl implements SalesOrderService {
             order.setQuantity(createOrderRequest.getQuantity());
             order.setOrderDate(LocalDate.now());
             order.setStatus(OrderStatus.PENDING);
-            order.setTotalAmount(createOrderRequest.getAmount());
+            order.setTotalAmount(createOrderRequest.getAmount()!=null ? createOrderRequest.getAmount():0.0);
 
             SalesOrder savedOrder = salesOrderRepository.save(order);
 
             response.setOrderDate(savedOrder.getOrderDate().toString());
             response.setStatus(savedOrder.getStatus().toString());
-            response.setTotalAmount(savedOrder.getTotalAmount());
+            response.setTotalAmount(Double.valueOf(savedOrder.getTotalAmount()));
         
         return response;
     }

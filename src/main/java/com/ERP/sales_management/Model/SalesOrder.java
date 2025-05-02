@@ -100,4 +100,30 @@ public class SalesOrder {
     public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+    public String getProductName() {
+        return productName;
+    }
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+    public Integer getQuantity() {
+        return quantity;
+    }
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+
+
+
+
+
+
 }
