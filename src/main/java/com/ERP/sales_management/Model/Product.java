@@ -1,13 +1,5 @@
 package com.ERP.sales_management.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-
-
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,12 +17,21 @@ public class Product {
 
     private String name;
     private String sku;
-    private Double price;
+    private Double price_per_unit;
     private Integer stockQuantity;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
 
 //    public Integer getId() {
 //        return id;

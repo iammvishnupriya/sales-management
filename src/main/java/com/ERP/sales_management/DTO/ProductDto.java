@@ -1,10 +1,6 @@
 package com.ERP.sales_management.DTO;
 
-
-
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
 public class ProductDto {
@@ -13,6 +9,8 @@ public class ProductDto {
     private String sku;
     private Double price;
     private Integer stockQuantity;
+    private Integer categoryId;
+    private String categoryName;
 
     public Integer getId() {
         return id;
@@ -52,5 +50,21 @@ public class ProductDto {
 
     public void setStockQuantity(Integer stockQuantity) {
         this.stockQuantity = stockQuantity;
+    }
+
+    public void getCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void getCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }
