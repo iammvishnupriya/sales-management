@@ -10,6 +10,7 @@ public class CreateSalesOrderRequest {
     private String customer;
     private Integer categoryId;
     private String productName;
+    private Integer price_per_unit;
     private Integer quantity;
     private Double amount;
 
@@ -53,13 +54,11 @@ public class CreateSalesOrderRequest {
         this.customer = customer;
     }
 
+    public Integer getPrice_per_unit() {
+        return price_per_unit;
+    }
 
-
-
-
-
-
-
-
-        
+    public void setPrice_per_unit(Integer price_per_unit) {
+        this.price_per_unit = price_per_unit;
+    }     
 }

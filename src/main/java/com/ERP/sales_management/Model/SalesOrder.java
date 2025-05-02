@@ -39,6 +39,8 @@ public class SalesOrder {
 
     private Integer quantity;
 
+    private Integer price_per_unit;
+
     private double totalAmount;
 
     @ManyToOne
@@ -120,10 +122,11 @@ public class SalesOrder {
         this.quantity = quantity;
     }
 
+    public Integer getPrice_per_unit() {
+        return price_per_unit;
+    }
 
-
-
-
-
-
+    public void setPrice_per_unit(Integer price_per_unit) {
+        this.price_per_unit = price_per_unit;
+    }     
 }

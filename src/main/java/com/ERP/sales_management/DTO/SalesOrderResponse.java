@@ -17,11 +17,10 @@ public class SalesOrderResponse {
     @JsonProperty("total_amount")
     private Double totalAmount;
     
-    // @JsonProperty("order_items")
-    // private List<OrderItemResponse> orderItems;
-    
     @JsonProperty("order_status")
     private String orderStatus;
+
+    private Integer price_per_unit;
 
     public Integer getId() {
         return id;
@@ -63,14 +62,6 @@ public class SalesOrderResponse {
         this.totalAmount = totalAmount;
     }
 
-    // public List<OrderItemResponse> getOrderItems() {
-    //     return orderItems;
-    // }
-
-    // public void setOrderItems(List<OrderItemResponse> orderItems) {
-    //     this.orderItems = orderItems;
-    // }
-
     public String getOrderStatus() {
         return orderStatus;
     }
@@ -78,4 +69,12 @@ public class SalesOrderResponse {
     public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
     }
+
+    public Integer getPrice_per_unit() {
+        return price_per_unit;
+    }
+
+    public void setPrice_per_unit(Integer price_per_unit) {
+        this.price_per_unit = price_per_unit;
+    }     
 }

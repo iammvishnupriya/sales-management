@@ -6,16 +6,11 @@ import com.ERP.sales_management.Model.*;
 import com.ERP.sales_management.Repository.*;
 import com.ERP.sales_management.Service.InventoryService;
 import com.ERP.sales_management.Service.SalesOrderService;
-import com.ERP.sales_management.exception.CustomerNotFoundException;
-import com.ERP.sales_management.exception.ProductException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 @Service
 public class SalesOrderServiceImpl implements SalesOrderService {
@@ -47,12 +42,13 @@ public class SalesOrderServiceImpl implements SalesOrderService {
             order.setCategoryId(createOrderRequest.getCategoryId());
             order.setProductName(createOrderRequest.getProductName());
             order.setQuantity(createOrderRequest.getQuantity());
+            order.setPrice_per_unit(createOrderRequest.getPrice_per_unit());
             order.setOrderDate(LocalDate.now());
             order.setStatus(OrderStatus.PENDING);
             order.setTotalAmount(createOrderRequest.getAmount()!=null ? createOrderRequest.getAmount():0.0);
 
             SalesOrder savedOrder = salesOrderRepository.save(order);
-
+            response.setPrice_per_unit(savedOrder.getPrice_per_unit());
             response.setOrderDate(savedOrder.getOrderDate().toString());
             response.setStatus(savedOrder.getStatus().toString());
             response.setTotalAmount(Double.valueOf(savedOrder.getTotalAmount()));
