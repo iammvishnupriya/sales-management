@@ -1,9 +1,14 @@
 package com.ERP.sales_management.Controller;
 
 import com.ERP.sales_management.DTO.CreateSalesOrderRequest;
+import com.ERP.sales_management.DTO.SalesOrderDTO;
 import com.ERP.sales_management.DTO.SalesOrderResponse;
+import com.ERP.sales_management.Enum.OrderStatus;
 import com.ERP.sales_management.Response.SuccessResponse;
 import com.ERP.sales_management.Service.SalesOrderService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,5 +45,11 @@ public class SalesOrderController {
                 new SuccessResponse<>(500, "An error occurred: " + e.getMessage(), null)
             );
         }
+    }
+
+    @GetMapping("/getOrderByStatus")
+    public ResponseEntity<SuccessResponse<List<SalesOrderDTO>>> getOrderByStatus(@RequestParam(required = false) OrderStatus status){
+        System.out.println("Entering the controller");
+        return salesOrderService.getOrderByStatus(status);
     }
 }

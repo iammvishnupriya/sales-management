@@ -4,13 +4,17 @@ import com.ERP.sales_management.DTO.*;
 import com.ERP.sales_management.Enum.OrderStatus;
 import com.ERP.sales_management.Model.*;
 import com.ERP.sales_management.Repository.*;
+import com.ERP.sales_management.Response.SuccessResponse;
 import com.ERP.sales_management.Service.InventoryService;
 import com.ERP.sales_management.Service.SalesOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SalesOrderServiceImpl implements SalesOrderService {
@@ -54,5 +58,31 @@ public class SalesOrderServiceImpl implements SalesOrderService {
             response.setTotalAmount(Double.valueOf(savedOrder.getTotalAmount()));
         
         return response;
+    }
+
+
+    @Override
+    public ResponseEntity<SuccessResponse<List<SalesOrderDTO>>> getOrderByStatus(OrderStatus status) {
+        List<SalesOrder> salesOrder;
+
+        if(status != null){
+            salesOrder = salesOrderRepository.findByStatus(status);
+        } else {
+            salesOrder = salesOrderRepository.findAll();
+        }
+        List<SalesOrderDTO> salesOrderDTOs = salesOrder.stream()
+                    .map(order->
+                    {
+                        SalesOrderDTO salesOrderDTO = new SalesOrderDTO();
+                        salesOrderDTO.setId(order.getId());
+                        salesOrderDTO.setOrderNumber(order.getOrderNumber());
+                        salesOrderDTO.setCustomerName(order.getCustomer());
+                        salesOrderDTO.setStatus(order.getStatus().toString());
+                        salesOrderDTO.setTotalAmount(Double.valueOf(order.getTotalAmount()));
+                        return salesOrderDTO;
+                    })
+                    .collect(Collectors.toList());
+
+        return ResponseEntity.ok(new SuccessResponse<>(200, "Orders fetched successfully", salesOrderDTOs));
     }
 }

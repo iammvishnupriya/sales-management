@@ -6,6 +6,7 @@ public class SalesOrderDTO {
     private int id;
     private String orderNumber;
     private int customerId;
+    private String customerName;
     private LocalDate orderDate;
     private String status;
     private double totalAmount;
@@ -65,5 +66,13 @@ public class SalesOrderDTO {
 
     public void setCreatedById(int createdById) {
         this.createdById = createdById;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 }
