@@ -77,7 +77,9 @@ public class SalesOrderServiceImpl implements SalesOrderService {
                         salesOrderDTO.setId(order.getId());
                         salesOrderDTO.setOrderNumber(order.getOrderNumber());
                         salesOrderDTO.setCustomerName(order.getCustomer());
+                        salesOrderDTO.setProductName(order.getProductName());
                         salesOrderDTO.setStatus(order.getStatus().toString());
+                        salesOrderDTO.setOrderDate(order.getOrderDate().toString());
                         salesOrderDTO.setTotalAmount(Double.valueOf(order.getTotalAmount()));
                         return salesOrderDTO;
                     })

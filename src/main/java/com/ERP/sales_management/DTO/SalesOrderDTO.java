@@ -7,17 +7,26 @@ public class SalesOrderDTO {
     private String orderNumber;
     private int customerId;
     private String customerName;
-    private LocalDate orderDate;
+    private String productName;
+    private String orderDate;
     private String status;
     private double totalAmount;
     private int createdById;
-
+    
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getProductName() {
+        return productName;
     }
 
     public String getOrderNumber() {
@@ -36,11 +45,11 @@ public class SalesOrderDTO {
         this.customerId = customerId;
     }
 
-    public LocalDate getOrderDate() {
+    public String getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(LocalDate orderDate) {
+    public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }
 
