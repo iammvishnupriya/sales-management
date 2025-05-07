@@ -12,6 +12,16 @@ public class SalesOrderDTO {
     private String status;
     private double totalAmount;
     private int createdById;
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    private int quantity;
     
     public int getId() {
         return id;

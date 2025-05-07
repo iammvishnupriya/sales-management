@@ -56,6 +56,14 @@ public class ProductDto {
         this.categoryId = categoryId;
     }
 
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
     public Integer getCategoryId() {
         return categoryId;
     }

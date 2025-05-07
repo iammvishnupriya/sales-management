@@ -80,6 +80,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
                         salesOrderDTO.setProductName(order.getProductName());
                         salesOrderDTO.setStatus(order.getStatus().toString());
                         salesOrderDTO.setOrderDate(order.getOrderDate().toString());
+                        salesOrderDTO.setQuantity(order.getQuantity());
                         salesOrderDTO.setTotalAmount(Double.valueOf(order.getTotalAmount()));
                         return salesOrderDTO;
                     })
@@ -87,4 +88,20 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 
         return ResponseEntity.ok(new SuccessResponse<>(200, "Orders fetched successfully", salesOrderDTOs));
     }
+    @Transactional
+    public void updateOrderStatus(Integer orderId, String status) {
+        SalesOrder order = salesOrderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found with ID: " + orderId));
+
+        OrderStatus orderStatus;
+        try {
+            orderStatus = OrderStatus.valueOf(status.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid status: " + status);
+        }
+
+        order.setStatus(orderStatus);
+        salesOrderRepository.save(order);
+    }
 }
+

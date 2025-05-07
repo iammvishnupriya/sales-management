@@ -1,5 +1,4 @@
 package com.ERP.sales_management.DTO;
-
 public class CustomerDTO {
 
     private int id;

@@ -14,4 +14,6 @@ public interface SalesOrderService {
     SalesOrderResponse createSalesOrder(CreateSalesOrderRequest createOrderRequest);
 
     ResponseEntity<SuccessResponse<List<SalesOrderDTO>>> getOrderByStatus(OrderStatus status);
+
+    void updateOrderStatus(Integer orderId, String status);
 }

@@ -3,6 +3,7 @@ package com.ERP.sales_management.Controller;
 import com.ERP.sales_management.DTO.CreateSalesOrderRequest;
 import com.ERP.sales_management.DTO.SalesOrderDTO;
 import com.ERP.sales_management.DTO.SalesOrderResponse;
+import com.ERP.sales_management.DTO.UpdateOrderStatusRequest;
 import com.ERP.sales_management.Enum.OrderStatus;
 import com.ERP.sales_management.Response.SuccessResponse;
 import com.ERP.sales_management.Service.SalesOrderService;
@@ -52,4 +53,18 @@ public class SalesOrderController {
         System.out.println("Entering the controller");
         return salesOrderService.getOrderByStatus(status);
     }
+
+    @PutMapping("/updateStatus")
+    public ResponseEntity<SuccessResponse<String>> updateOrderStatus(@RequestBody UpdateOrderStatusRequest request) {
+        try {
+            salesOrderService.updateOrderStatus(request.getOrderId(), request.getStatus());
+            return ResponseEntity.ok(new SuccessResponse<>(200, "Order status updated successfully", "Order ID: " + request.getOrderId()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new SuccessResponse<>(500, "An error occurred: " + e.getMessage(), null));
+        }
+    }
+
 }
+
+
