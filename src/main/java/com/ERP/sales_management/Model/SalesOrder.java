@@ -43,6 +43,28 @@ public class SalesOrder {
 
     private double totalAmount;
 
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public LocalDate getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public void setDeliveryDate(LocalDate deliveryDate) {
+        this.deliveryDate = deliveryDate;
+    }
+
+    @Column(length = 1000)
+    private String remarks;
+
+    private LocalDate deliveryDate;
+
+
     @ManyToOne
     @JoinColumn(name = "created_by", nullable = true)
     private User createdBy;

@@ -15,5 +15,5 @@ public interface SalesOrderService {
 
     ResponseEntity<SuccessResponse<List<SalesOrderDTO>>> getOrderByStatus(OrderStatus status);
 
-    void updateOrderStatus(Integer orderId, String status);
+    void updateOrderStatus(Integer orderId, String status, String remarks, String deliveryDate);
 }

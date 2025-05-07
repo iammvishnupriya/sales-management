@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -89,7 +90,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
         return ResponseEntity.ok(new SuccessResponse<>(200, "Orders fetched successfully", salesOrderDTOs));
     }
     @Transactional
-    public void updateOrderStatus(Integer orderId, String status) {
+    public void updateOrderStatus(Integer orderId, String status, String remarks, String deliveryDate) {
         SalesOrder order = salesOrderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found with ID: " + orderId));
 
@@ -101,7 +102,20 @@ public class SalesOrderServiceImpl implements SalesOrderService {
         }
 
         order.setStatus(orderStatus);
+        order.setRemarks(remarks);
+
+        if (deliveryDate != null && !deliveryDate.isBlank()) {
+            try {
+                // Convert String to LocalDate
+                LocalDate parsedDate = LocalDate.parse(deliveryDate);
+                order.setDeliveryDate(parsedDate);
+            } catch (DateTimeParseException e) {
+                throw new IllegalArgumentException("Invalid delivery date format. Expected format: yyyy-MM-dd");
+            }
+        }
+
         salesOrderRepository.save(order);
     }
+
 }
 

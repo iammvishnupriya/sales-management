@@ -57,7 +57,7 @@ public class SalesOrderController {
     @PutMapping("/updateStatus")
     public ResponseEntity<SuccessResponse<String>> updateOrderStatus(@RequestBody UpdateOrderStatusRequest request) {
         try {
-            salesOrderService.updateOrderStatus(request.getOrderId(), request.getStatus());
+            salesOrderService.updateOrderStatus(request.getOrderId(), request.getStatus(),request.getRemarks(),request.getDeliveryDate());
             return ResponseEntity.ok(new SuccessResponse<>(200, "Order status updated successfully", "Order ID: " + request.getOrderId()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
