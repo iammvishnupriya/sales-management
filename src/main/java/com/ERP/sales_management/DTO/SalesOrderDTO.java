@@ -13,6 +13,25 @@ public class SalesOrderDTO {
     private double totalAmount;
     private int createdById;
 
+    public String getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public void setDeliveryDate(String deliveryDate) {
+        this.deliveryDate = deliveryDate;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    private String deliveryDate;
+    private String remarks;
+
     public int getQuantity() {
         return quantity;
     }
