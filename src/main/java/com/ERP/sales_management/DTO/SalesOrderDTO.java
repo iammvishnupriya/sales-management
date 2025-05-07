@@ -13,6 +13,15 @@ public class SalesOrderDTO {
     private double totalAmount;
     private int createdById;
 
+    public String getProcessingRemarks() {
+        return ProcessingRemarks;
+    }
+
+    public void setProcessingRemarks(String processingRemarks) {
+        ProcessingRemarks = processingRemarks;
+    }
+
+    private String ProcessingRemarks;
     public String getDeliveryDate() {
         return deliveryDate;
     }

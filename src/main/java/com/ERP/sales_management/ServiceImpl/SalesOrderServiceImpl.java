@@ -81,6 +81,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
                         salesOrderDTO.setDeliveryDate(String.valueOf(order.getDeliveryDate()));
                         salesOrderDTO.setRemarks(order.getRemarks());
                         salesOrderDTO.setProductName(order.getProductName());
+                        salesOrderDTO.setProcessingRemarks(order.getProcessingRemarks());
                         salesOrderDTO.setStatus(order.getStatus().toString());
                         salesOrderDTO.setOrderDate(order.getOrderDate().toString());
                         salesOrderDTO.setQuantity(order.getQuantity());
@@ -116,6 +117,24 @@ public class SalesOrderServiceImpl implements SalesOrderService {
                 throw new IllegalArgumentException("Invalid delivery date format. Expected format: yyyy-MM-dd");
             }
         }
+
+        salesOrderRepository.save(order);
+    }
+    @Transactional
+    public void updateProcessingOrderStatus(Integer orderId, String status, String processingRemarks) {
+        SalesOrder order = salesOrderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found with ID: " + orderId));
+
+        OrderStatus orderStatus;
+        try {
+            orderStatus = OrderStatus.valueOf(status.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid status: " + status);
+        }
+
+        order.setStatus(orderStatus);
+        order.setProcessingRemarks(processingRemarks);
+
 
         salesOrderRepository.save(order);
     }

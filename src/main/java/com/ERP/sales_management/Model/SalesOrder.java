@@ -69,6 +69,17 @@ public class SalesOrder {
     @JoinColumn(name = "created_by", nullable = true)
     private User createdBy;
 
+    public String getProcessingRemarks() {
+        return ProcessingRemarks;
+    }
+
+    public void setProcessingRemarks(String processingRemarks) {
+        ProcessingRemarks = processingRemarks;
+    }
+
+    @Column(length = 1000)
+     private String ProcessingRemarks;
+
     public Integer getId() {
         return id;
     }

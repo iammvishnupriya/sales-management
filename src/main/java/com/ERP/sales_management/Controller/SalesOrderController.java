@@ -1,9 +1,6 @@
 package com.ERP.sales_management.Controller;
 
-import com.ERP.sales_management.DTO.CreateSalesOrderRequest;
-import com.ERP.sales_management.DTO.SalesOrderDTO;
-import com.ERP.sales_management.DTO.SalesOrderResponse;
-import com.ERP.sales_management.DTO.UpdateOrderStatusRequest;
+import com.ERP.sales_management.DTO.*;
 import com.ERP.sales_management.Enum.OrderStatus;
 import com.ERP.sales_management.Response.SuccessResponse;
 import com.ERP.sales_management.Service.SalesOrderService;
@@ -58,6 +55,16 @@ public class SalesOrderController {
     public ResponseEntity<SuccessResponse<String>> updateOrderStatus(@RequestBody UpdateOrderStatusRequest request) {
         try {
             salesOrderService.updateOrderStatus(request.getOrderId(), request.getStatus(),request.getRemarks(),request.getDeliveryDate());
+            return ResponseEntity.ok(new SuccessResponse<>(200, "Order status updated successfully", "Order ID: " + request.getOrderId()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new SuccessResponse<>(500, "An error occurred: " + e.getMessage(), null));
+        }
+    }
+    @PutMapping("/updateProcessingStatus")
+    public ResponseEntity<SuccessResponse<String>> updateProcessingOrderStatus(@RequestBody UpdateProcessingOrderStatusRequest request) {
+        try {
+            salesOrderService.updateProcessingOrderStatus(request.getOrderId(), request.getStatus(),request.getProcessingRemarks());
             return ResponseEntity.ok(new SuccessResponse<>(200, "Order status updated successfully", "Order ID: " + request.getOrderId()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
